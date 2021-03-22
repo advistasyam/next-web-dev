@@ -1,3 +1,54 @@
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <h3 align="center">Acil Pages</h3>
+
+  <p align="center">
+    Frontend App Service to find movies and blog.
+    <br />
+    <br />
+    <a>Live Site (not implemented yet)</a>
+  </p>
+</p>
+
+### Built With
+
+-   [Next.js](https://nextjs.org/)
+-   [React.js](https://reactjs.org/)
+-   [Tailwind CSS](https://tailwindcss.com/)
+-   [Styled-Components](https://styled-components.com/)
+-   [Chakra UI](https://chakra-ui.com/)
+-   [Framer Motion](https://www.framer.com/motion/)
+
+<!-- GETTING STARTED -->
+
+## Getting Started
+
+### Installation
+
+1. Clone the repo
+    ```sh
+    git clone https://github.com/bizhub-dev/frontend-app.git
+    ```
+2. Install NPM packages
+    ```sh
+    npm install
+    ```
+3. Run App In Development Mode
+    ```sh
+    npm run dev
+    ```
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch with your name (`git checkout -b yourname/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin yourname/AmazingFeature`)
+5. Open a Pull Request
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
