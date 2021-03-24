@@ -10,6 +10,10 @@ module.exports = {
         gelap: "#353535",
         hijau: "#69C1A6",
         abu: "#DEDEDE"
+      },
+      minHeight: {
+        '85': '85vh',
+        '50px': '50px'
       }
     },
   },
