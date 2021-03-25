@@ -22,31 +22,96 @@ import RadioCard from "../components/RadioCard"
 export interface filmProps {}
 
 const film: React.FC<filmProps> = () => {
+  const [searchBy, setSearchBy] = useState<string>("All")
+  const [lastRequest, setLastRequest] = useState<string>("")
+  const [pages, setPages] = useState<number>(1)
+  const [maxPages, setMaxPages] = useState<number>(1)
+  const [stateobj, setStateobj] = useState<any>({ Search: [] })
+  const [indexModal, setIndexModal] = useState<number>(0)
+
   const options = ["All", "Movie", "Series"]
-  const [searchBy, setSearchBy] = useState("All")
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "searchType",
     defaultValue: "All",
     onChange: setSearchBy,
   })
-
   const group = getRootProps()
 
   const { register, handleSubmit } = useForm()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [stateobj, setStateobj] = useState<any>({ Search: [] })
-  const [indexModal, setIndexModal] = useState<number>(0)
+  const addToLiked = (param: object) => {
+    if (localStorage.getItem("liked") === null) {
+      localStorage.setItem("liked", "[]")
+      let initialStorage = JSON.parse(localStorage.getItem("liked"))
+      initialStorage.push(param)
+      localStorage.setItem("liked", JSON.stringify(initialStorage))
+    }
+    console.log(param)
+    onClose()
+  }
+
+  const backwardPage = () => {
+    if (pages !== 1) {
+      let newNumber: number = pages - 1
+      fetchPagination(newNumber)
+    }
+  }
+
+  const backwardPageFirst = () => {
+    if (pages !== 1) {
+      let newNumber: number = 1
+      fetchPagination(newNumber)
+    }
+  }
+
+  const forwardPage = () => {
+    if (pages !== maxPages) {
+      let newNumber: number = pages + 1
+      fetchPagination(newNumber)
+    }
+  }
+
+  const forwardPageLast = () => {
+    if (pages !== maxPages) {
+      let newNumber: number = maxPages
+      fetchPagination(newNumber)
+    }
+  }
+
+  const fetchPagination = async (param: number) => {
+    toast.loading(`Loading Page ` + `${param}`)
+    await axios
+      .get(lastRequest + `&page=${param}`)
+      .then(function (response) {
+        toast.dismiss()
+        toast.success("Data Fetched!")
+        setPages(param)
+        setStateobj(response.data)
+      })
+      .catch(function (err) {
+        toast.dismiss()
+        toast.error("Connection Problem")
+        console.log(err)
+      })
+  }
 
   const onSubmit = async data => {
-    let typeSearch = searchBy === "Movie" ? "&type=movie" : searchBy === "Series" ? "&type=series" : ""
+    let typeSearch =
+      searchBy === "Movie"
+        ? "&type=movie"
+        : searchBy === "Series"
+        ? "&type=series"
+        : ""
     toast.loading(`Searching ` + `${data.name}`)
     await axios
       .get(`/api/getfilm/` + `${data.name}` + `${typeSearch}`)
       .then(function (response) {
         toast.dismiss()
         toast.success("We Found Your Items!")
-        console.log(response.data)
+        setPages(1)
+        setLastRequest(`/api/getfilm/` + `${data.name}` + `${typeSearch}`)
+        setMaxPages(Math.ceil(parseInt(response.data.totalResults, 10) / 10))
         setStateobj(response.data)
       })
       .catch(function (err) {
@@ -87,7 +152,7 @@ const film: React.FC<filmProps> = () => {
             <input
               className="w-full rounded-2xl border-hijau border-2 pl-4 max-w-xl mt-6 outline-none min-h-50px"
               type="text"
-              placeholder="Input your film name here"
+              placeholder="Explore your curious here"
               required
               ref={register}
               name="name"
@@ -113,7 +178,7 @@ const film: React.FC<filmProps> = () => {
               transition={{ ease: "easeInOut", duration: 0.5 }}
               key={stateobj}
             >
-              <div className="container mx-auto flex items-center justify-center mt-16 font-bold">
+              <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center sm:justify-between mt-16 font-bold px-0 lg:px-14 xl:px-16 2xl:px-20 space-y-6 lg:space-y-0">
                 <h1 className="text-center">
                   Found{" "}
                   <span className="text-hijau">
@@ -121,6 +186,61 @@ const film: React.FC<filmProps> = () => {
                   </span>{" "}
                   from search
                 </h1>
+                <div className="flex flex-row space-x-2">
+                  {pages === 1 ? (
+                    <>
+                      <div className="rounded-lg bg-hijaudisabled flex items-center justify-center px-3 text-white focus:outline-none cursor-default">
+                        &lt;&lt;
+                      </div>
+                      <div className="rounded-lg bg-hijaudisabled flex items-center justify-center px-3 text-white focus:outline-none cursor-default">
+                        &lt;
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className="rounded-lg bg-hijau flex items-center justify-center px-3 text-white focus:outline-none cursor-pointer"
+                        onClick={() => backwardPageFirst()}
+                      >
+                        &lt;&lt;
+                      </div>
+                      <div
+                        className="rounded-lg bg-hijau flex items-center justify-center px-3 text-white focus:outline-none cursor-pointer"
+                        onClick={() => backwardPage()}
+                      >
+                        &lt;
+                      </div>
+                    </>
+                  )}
+                  <h1>
+                    Page {pages} / {maxPages}
+                  </h1>
+                  {pages === maxPages ? (
+                    <>
+                      <div className="rounded-lg bg-hijaudisabled flex items-center justify-center px-3 text-white focus:outline-none cursor-default">
+                        &gt;
+                      </div>
+                      <div className="rounded-lg bg-hijaudisabled flex items-center justify-center px-3 text-white focus:outline-none cursor-default">
+                        &gt;&gt;
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className="rounded-lg bg-hijau flex items-center justify-center px-3 text-white focus:outline-none cursor-pointer"
+                        onClick={() => forwardPage()}
+                      >
+                        &gt;
+                      </div>
+                      <div
+                        className="rounded-lg bg-hijau flex items-center justify-center px-3 text-white focus:outline-none cursor-pointer"
+                        onClick={() => forwardPageLast()}
+                      >
+                        &gt;&gt;
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
               <div className="flex flex-wrap flex-col sm:flex-row items-center justify-center gap-12 mt-6 container mx-auto">
                 {stateobj.Search.map(function (val, index) {
@@ -130,11 +250,19 @@ const film: React.FC<filmProps> = () => {
                       onClick={() => openModal(index)}
                     >
                       <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                        <img
-                          src={val.Poster}
-                          alt="#"
-                          className="w-full h-32 h-64 md:h-96 object-cover"
-                        />
+                        {val.Poster === "N/A" ? (
+                          <img
+                            src="/nothing.png"
+                            alt="no picture"
+                            className="w-full h-32 h-64 md:h-96 object-cover"
+                          />
+                        ) : (
+                          <img
+                            src={val.Poster}
+                            alt="/nothing.png"
+                            className="w-full h-32 h-64 md:h-96 object-cover"
+                          />
+                        )}
                         <div className="m-4">
                           <h1 className="font-bold text-hijau truncate">
                             {val.Title}
@@ -145,6 +273,9 @@ const film: React.FC<filmProps> = () => {
                         </div>
                         <div className="bg-hijau text-white text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
                           <span>{val.Type}</span>
+                        </div>
+                        <div className="absolute bottom-0 right-0 overflow-hidden rounded-br-lg">
+                          <img src="/cardbawah.svg" alt=""/>
                         </div>
                       </div>
                     </div>
@@ -166,10 +297,17 @@ const film: React.FC<filmProps> = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            <h1 className="pr-6">{stateobj.Search[indexModal]?.Title}</h1>
+          <ModalHeader
+            borderBottomWidth="5px"
+            borderTopLeftRadius="5"
+            borderTopRightRadius="5"
+            background="linear-gradient(257.36deg, #09BE9E 7.08%, rgba(106, 239, 231, 0.594497) 88.38%, rgba(33, 216, 160, 0) 176.3%), #6EBFA6"
+            color="white"
+          >
+            <h1 className="pr-6 text-lg font-medium">{stateobj.Search[indexModal]?.Title}</h1>
           </ModalHeader>
           <ModalCloseButton
+            color="white"
             _focus={{
               outline: "none",
             }}
@@ -179,13 +317,13 @@ const film: React.FC<filmProps> = () => {
               <img src={stateobj.Search[indexModal]?.Poster} alt="" />
             </div>
             <h1 className="mt-6 font-semibold">
-              Tahun :{" "}
+              Year :{" "}
               <span className="text-hijau">
                 {stateobj.Search[indexModal]?.Year}
               </span>
             </h1>
             <h1 className="mt-2 font-semibold">
-              Tipe :{" "}
+              Type :{" "}
               <span className="text-hijau">
                 {stateobj.Search[indexModal]?.Type}
               </span>
@@ -198,10 +336,22 @@ const film: React.FC<filmProps> = () => {
             </h1>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <div className="flex flex-row space-x-2">
+              <div
+                className="cursor-pointer bg-secondary rounded-lg px-3 py-2 text-white"
+                onClick={() => {
+                  addToLiked(stateobj.Search[indexModal])
+                }}
+              >
+                Like
+              </div>
+              <div
+                className="cursor-pointer bg-hijau rounded-lg px-3 py-2 text-white"
+                onClick={onClose}
+              >
+                Add to bookmark
+              </div>
+            </div>
           </ModalFooter>
         </ModalContent>
       </Modal>

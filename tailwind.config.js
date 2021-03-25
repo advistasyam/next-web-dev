@@ -9,12 +9,14 @@ module.exports = {
       colors: {
         gelap: "#353535",
         hijau: "#69C1A6",
-        abu: "#DEDEDE"
+        abu: "#DEDEDE",
+        hijaudisabled: "#BEF2E2",
+        secondary: "#C3689F",
       },
       minHeight: {
         '85': '85vh',
         '50px': '50px'
-      }
+      },
     },
   },
   variants: {
