@@ -7,10 +7,12 @@ import React, { useState } from "react"
 export interface LikesProps {}
 
 const Likes: React.FC<LikesProps> = () => {
-  const [totalDataLiked, setTotalDataLiked] = useState(JSON.parse(localStorage.getItem("id_liked")).length)
+  const [totalDataLiked, setTotalDataLiked] = useState<Array<any>>([])
+
+
 
   return (
-    { totalDataLiked === 0 ? (
+    { totalDataLiked.length === 0  ? (
       <></>
     ) : (
       <></>
