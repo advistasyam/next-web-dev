@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import toast, { Toaster } from "react-hot-toast"
 import Link from "next/link"
 import Head from "next/head"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Modal,
   ModalOverlay,
@@ -22,10 +22,17 @@ const Bookmark: React.FC<BookmarkProps> = () => {
   const [likedFilm, setLikedFilm] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  let id_bookmark: Array<any> = JSON.parse(localStorage.getItem("id_bookmark"))
-  let object_bookmark: Array<any> = JSON.parse(
-    localStorage.getItem("object_bookmark")
-  )
+  if (typeof window !== "undefined") {
+    var id_bookmark: Array<any> = JSON.parse(localStorage.getItem("id_bookmark"))
+    var object_bookmark: Array<any> = JSON.parse(
+      localStorage.getItem("object_bookmark")
+    )
+  }
+
+  // useEffect(function () {
+  //   id_bookmark 
+  //   object_bookmark 
+  // }, [])
 
   const openModal = (param: number) => {
     //liked section

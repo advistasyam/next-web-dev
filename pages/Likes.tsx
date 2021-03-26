@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import toast, { Toaster } from "react-hot-toast"
 import Link from "next/link"
 import Head from "next/head"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Modal,
   ModalOverlay,
@@ -22,10 +22,10 @@ const Likes: React.FC<LikesProps> = () => {
   const [bookmarkFilm, setBookmarkFilm] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  let id_liked: Array<any> = JSON.parse(localStorage.getItem("id_liked"))
-  let object_liked: Array<any> = JSON.parse(
-    localStorage.getItem("object_liked")
-  )
+  if (typeof window !== "undefined") {
+    var id_liked: Array<any> = JSON.parse(localStorage.getItem("id_liked"))
+    var object_liked: Array<any> = JSON.parse(localStorage.getItem("object_liked"))
+  }
 
   const openModal = (param: number) => {
     //bookmark section
@@ -95,6 +95,11 @@ const Likes: React.FC<LikesProps> = () => {
     }
   }
 
+  // useEffect(function () {
+  //   id_liked 
+  //   object_liked 
+  // }, [])
+
   return (
     <>
       <Head>
@@ -114,49 +119,51 @@ const Likes: React.FC<LikesProps> = () => {
         id_liked !== undefined &&
         id_liked.length !== 0 ? (
           <>
-          <div className="flex items-center justify-center mt-12">
-            <h1 className="text-3xl sm:text-5xl text-black">Your <span className="text-hijau">Liked</span> Items</h1>
-          </div>
-          <div className="flex flex-wrap flex-col sm:flex-row items-center justify-center gap-12 mt-12 container mx-auto mb-48">
-            {object_liked.map(function (val, index) {
-              return (
-                <div
-                  className="flex-initial w-2/3 sm:w-1/3 md:w-1/3 lg:w-1/5 relative cursor-pointer"
-                  onClick={() => openModal(index)}
-                >
-                  <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                    {val.Poster === "N/A" ? (
-                      <img
-                        src="/nothing.png"
-                        alt="no picture"
-                        className="w-full h-32 h-64 md:h-96 object-cover"
-                      />
-                    ) : (
-                      <img
-                        src={val.Poster}
-                        alt="/nothing.png"
-                        className="w-full h-32 h-64 md:h-96 object-cover"
-                      />
-                    )}
-                    <div className="m-4">
-                      <h1 className="font-bold text-hijau truncate">
-                        {val.Title}
-                      </h1>
-                      <h1 className="block text-gray-500 text-sm">
-                        {val.Year}
-                      </h1>
-                    </div>
-                    <div className="bg-hijau text-white text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
-                      <span>{val.Type}</span>
-                    </div>
-                    <div className="absolute bottom-0 right-0 overflow-hidden rounded-br-lg">
-                      <img src="/cardbawah.svg" alt="" />
+            <div className="flex items-center justify-center mt-12">
+              <h1 className="text-3xl sm:text-5xl text-black">
+                Your <span className="text-hijau">Liked</span> Items
+              </h1>
+            </div>
+            <div className="flex flex-wrap flex-col sm:flex-row items-center justify-center gap-12 mt-12 container mx-auto mb-48">
+              {object_liked.map(function (val, index) {
+                return (
+                  <div
+                    className="flex-initial w-2/3 sm:w-1/3 md:w-1/3 lg:w-1/5 relative cursor-pointer"
+                    onClick={() => openModal(index)}
+                  >
+                    <div className="bg-white rounded-lg overflow-hidden shadow-md">
+                      {val.Poster === "N/A" ? (
+                        <img
+                          src="/nothing.png"
+                          alt="no picture"
+                          className="w-full h-32 h-64 md:h-96 object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={val.Poster}
+                          alt="/nothing.png"
+                          className="w-full h-32 h-64 md:h-96 object-cover"
+                        />
+                      )}
+                      <div className="m-4">
+                        <h1 className="font-bold text-hijau truncate">
+                          {val.Title}
+                        </h1>
+                        <h1 className="block text-gray-500 text-sm">
+                          {val.Year}
+                        </h1>
+                      </div>
+                      <div className="bg-hijau text-white text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
+                        <span>{val.Type}</span>
+                      </div>
+                      <div className="absolute bottom-0 right-0 overflow-hidden rounded-br-lg">
+                        <img src="/cardbawah.svg" alt="" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
           </>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-85 space-y-12">
