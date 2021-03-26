@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps, router }) {
       localStorage.setItem("object_bookmark", "[]")
     }
   }, [])
-  
+
   return (
     <ChakraProvider>
       <Layout>
@@ -32,6 +32,10 @@ function MyApp({ Component, pageProps, router }) {
       </Layout>
     </ChakraProvider>
   )
+}
+
+MyApp.getInitialProps = () => {
+  return {}
 }
 
 export default MyApp

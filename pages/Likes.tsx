@@ -22,10 +22,8 @@ const Likes: React.FC<LikesProps> = () => {
   const [bookmarkFilm, setBookmarkFilm] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  if (typeof window !== "undefined") {
-    var id_liked: Array<any> = JSON.parse(localStorage.getItem("id_liked"))
-    var object_liked: Array<any> = JSON.parse(localStorage.getItem("object_liked"))
-  }
+  let id_liked: Array<any> = JSON.parse(localStorage.getItem("id_liked"))
+  let object_liked: Array<any> = JSON.parse(localStorage.getItem("object_liked"))
 
   const openModal = (param: number) => {
     //bookmark section

@@ -22,12 +22,10 @@ const Bookmark: React.FC<BookmarkProps> = () => {
   const [likedFilm, setLikedFilm] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  if (typeof window !== "undefined") {
-    var id_bookmark: Array<any> = JSON.parse(localStorage.getItem("id_bookmark"))
-    var object_bookmark: Array<any> = JSON.parse(
-      localStorage.getItem("object_bookmark")
-    )
-  }
+  let id_bookmark: Array<any> = JSON.parse(localStorage.getItem("id_bookmark"))
+  let object_bookmark: Array<any> = JSON.parse(
+    localStorage.getItem("object_bookmark")
+  )
 
   // useEffect(function () {
   //   id_bookmark 
