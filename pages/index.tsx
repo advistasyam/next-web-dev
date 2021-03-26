@@ -19,8 +19,24 @@ export default function Home() {
   `
 
   useEffect(() => {
+    if (localStorage.getItem("id_liked") === null) {
+      localStorage.setItem("id_liked", "[]")
+    }
+  
+    if (localStorage.getItem("object_liked") === null) {
+      localStorage.setItem("object_liked", "[]")
+    }
+  
+    if (localStorage.getItem("id_bookmark") === null) {
+      localStorage.setItem("id_bookmark", "[]")
+    }
+  
+    if (localStorage.getItem("object_bookmark") === null) {
+      localStorage.setItem("object_bookmark", "[]")
+    }
+
     new TypeIt("#elementType", {
-      speed: 200,
+      speed: 150,
       loop: true,
     })
       .type("Movies", { delay: 1000 })

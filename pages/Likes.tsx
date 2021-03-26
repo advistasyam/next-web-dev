@@ -2,11 +2,19 @@ import { motion } from "framer-motion"
 import toast, { Toaster } from "react-hot-toast"
 import Link from "next/link"
 import Head from "next/head"
+import React, { useState } from "react"
 
 export interface LikesProps {}
 
 const Likes: React.FC<LikesProps> = () => {
+  const [totalDataLiked, setTotalDataLiked] = useState(JSON.parse(localStorage.getItem("id_liked")).length)
+
   return (
+    { totalDataLiked === 0 ? (
+      <></>
+    ) : (
+      <></>
+    )}
     <>
       <Head>
         <title>Liked Items</title>

@@ -28,6 +28,8 @@ const film: React.FC<filmProps> = () => {
   const [maxPages, setMaxPages] = useState<number>(1)
   const [stateobj, setStateobj] = useState<any>({ Search: [] })
   const [indexModal, setIndexModal] = useState<number>(0)
+  const [likedFilm, setLikedFilm] = useState<boolean>(false)
+  const [bookmarkFilm, setBookmarkFilm] = useState<boolean>(false)
 
   const options = ["All", "Movie", "Series"]
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -40,15 +42,78 @@ const film: React.FC<filmProps> = () => {
   const { register, handleSubmit } = useForm()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const addToLiked = (param: object) => {
-    if (localStorage.getItem("liked") === null) {
-      localStorage.setItem("liked", "[]")
-      let initialStorage = JSON.parse(localStorage.getItem("liked"))
-      initialStorage.push(param)
-      localStorage.setItem("liked", JSON.stringify(initialStorage))
+  const addToLiked = param => {
+    if (localStorage.getItem("id_liked") !== null) {
+      let id_liked = JSON.parse(localStorage.getItem("id_liked"))
+      let object_liked = JSON.parse(localStorage.getItem("object_liked"))
+      id_liked.push(param.imdbID)
+      object_liked.push(param)
+
+      localStorage.setItem("id_liked", JSON.stringify(id_liked))
+      localStorage.setItem("object_liked", JSON.stringify(object_liked))
+
+      toast.success(`Added ` + `${param.Title}` + ` to liked items`)
+
+      setLikedFilm(true)
     }
-    console.log(param)
-    onClose()
+  }
+
+  const addToBookmark = param => {
+    if (localStorage.getItem("id_bookmark") !== null) {
+      let id_bookmark = JSON.parse(localStorage.getItem("id_bookmark"))
+      let object_bookmark = JSON.parse(localStorage.getItem("object_bookmark"))
+      id_bookmark.push(param.imdbID)
+      object_bookmark.push(param)
+
+      localStorage.setItem("id_bookmark", JSON.stringify(id_bookmark))
+      localStorage.setItem("object_bookmark", JSON.stringify(object_bookmark))
+
+      toast.success(`Added ` + `${param.Title}` + ` to bookmark items`)
+
+      setBookmarkFilm(true)
+    }
+  }
+
+  const deleteFromLiked = param => {
+    if (localStorage.getItem("id_liked") !== null) {
+      let id_liked = JSON.parse(localStorage.getItem("id_liked"))
+      let object_liked = JSON.parse(localStorage.getItem("object_liked"))
+
+      const index = id_liked.indexOf(param.imdbID)
+
+      if (index > -1) {
+        id_liked.splice(index, 1)
+        object_liked.splice(index, 1)
+      }
+
+      localStorage.setItem("id_liked", JSON.stringify(id_liked))
+      localStorage.setItem("object_liked", JSON.stringify(object_liked))
+
+      toast.success(`Deleted ` + `${param.Title}` + ` from liked items`)
+
+      setLikedFilm(false)
+    }
+  }
+
+  const deleteFromBookmark = param => {
+    if (localStorage.getItem("id_bookmark") !== null) {
+      let id_bookmark = JSON.parse(localStorage.getItem("id_bookmark"))
+      let object_bookmark = JSON.parse(localStorage.getItem("object_bookmark"))
+
+      const index = id_bookmark.indexOf(param.imdbID)
+
+      if (index > -1) {
+        id_bookmark.splice(index, 1)
+        object_bookmark.splice(index, 1)
+      }
+
+      localStorage.setItem("id_bookmark", JSON.stringify(id_bookmark))
+      localStorage.setItem("object_bookmark", JSON.stringify(object_bookmark))
+
+      toast.success(`Deleted ` + `${param.Title}` + ` from bookmark items`)
+
+      setBookmarkFilm(false)
+    }
   }
 
   const backwardPage = () => {
@@ -122,6 +187,19 @@ const film: React.FC<filmProps> = () => {
   }
 
   const openModal = (param: number) => {
+    //liked section
+    let idLikedToObserver = stateobj.Search[param]?.imdbID
+    let idLikedArray = JSON.parse(localStorage.getItem("id_liked"))
+    let isInLikedArray = idLikedArray.includes(idLikedToObserver)
+
+    //bookmark section
+    let idBookmarkToObserver = stateobj.Search[param]?.imdbID
+    let idBookmarkArray = JSON.parse(localStorage.getItem("id_bookmark"))
+    let isInBookmarkArray = idBookmarkArray.includes(idBookmarkToObserver)
+
+    isInLikedArray ? setLikedFilm(true) : setLikedFilm(false)
+    isInBookmarkArray ? setBookmarkFilm(true) : setBookmarkFilm(false)
+
     setIndexModal(param)
     onOpen()
   }
@@ -275,7 +353,7 @@ const film: React.FC<filmProps> = () => {
                           <span>{val.Type}</span>
                         </div>
                         <div className="absolute bottom-0 right-0 overflow-hidden rounded-br-lg">
-                          <img src="/cardbawah.svg" alt=""/>
+                          <img src="/cardbawah.svg" alt="" />
                         </div>
                       </div>
                     </div>
@@ -304,7 +382,9 @@ const film: React.FC<filmProps> = () => {
             background="linear-gradient(257.36deg, #09BE9E 7.08%, rgba(106, 239, 231, 0.594497) 88.38%, rgba(33, 216, 160, 0) 176.3%), #6EBFA6"
             color="white"
           >
-            <h1 className="pr-6 text-lg font-medium">{stateobj.Search[indexModal]?.Title}</h1>
+            <h1 className="pr-6 text-lg font-medium">
+              {stateobj.Search[indexModal]?.Title}
+            </h1>
           </ModalHeader>
           <ModalCloseButton
             color="white"
@@ -337,20 +417,44 @@ const film: React.FC<filmProps> = () => {
           </ModalBody>
           <ModalFooter>
             <div className="flex flex-row space-x-2">
-              <div
-                className="cursor-pointer bg-secondary rounded-lg px-3 py-2 text-white"
-                onClick={() => {
-                  addToLiked(stateobj.Search[indexModal])
-                }}
-              >
-                Like
-              </div>
-              <div
-                className="cursor-pointer bg-hijau rounded-lg px-3 py-2 text-white"
-                onClick={onClose}
-              >
-                Add to bookmark
-              </div>
+              {likedFilm === false ? (
+                <div
+                  className="cursor-pointer px-3 py-2 text-white font-semibold"
+                  onClick={() => {
+                    addToLiked(stateobj.Search[indexModal])
+                  }}
+                >
+                  <img src="/likedFalse.svg" alt="#" />
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer px-3 py-2 text-white font-semibold"
+                  onClick={() => {
+                    deleteFromLiked(stateobj.Search[indexModal])
+                  }}
+                >
+                  <img src="/likedTrue.svg" alt="#" />
+                </div>
+              )}
+              {bookmarkFilm === false ? (
+                <div
+                  className="cursor-pointer px-3 py-2 text-white font-semibold"
+                  onClick={() => {
+                    addToBookmark(stateobj.Search[indexModal])
+                  }}
+                >
+                  <img src="/bookmarkFalse.svg" alt="#" />
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer px-3 py-2 text-white font-semibold"
+                  onClick={() => {
+                    deleteFromBookmark(stateobj.Search[indexModal])
+                  }}
+                >
+                  <img src="/bookmarkTrue.svg" alt="#" />
+                </div>
+              )}
             </div>
           </ModalFooter>
         </ModalContent>
