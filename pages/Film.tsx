@@ -181,7 +181,7 @@ const film: React.FC<filmProps> = () => {
       })
       .catch(function (err) {
         toast.dismiss()
-        toast.error("Film not found or check your connection")
+        toast.error("Film not found")
         console.log(err)
       })
   }
