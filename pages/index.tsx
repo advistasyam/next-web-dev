@@ -23,11 +23,11 @@ export default function Home() {
       speed: 150,
       loop: true,
     })
-      .type("Movies", { delay: 1000 })
+      .type("wWKWKWKWK", { delay: 1000 })
       .delete()
-      .type("Series", { delay: 1000 })
+      .type("AWKOAKWOAKWOAK", { delay: 1000 })
       .delete()
-      .type("Games", { delay: 1000 })
+      .type("JAJAJJAJAJA", { delay: 1000 })
       .go()
   }, [])
 
@@ -73,7 +73,7 @@ export default function Home() {
                 transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
               >
                 <h1 className="font-base text-4xl lg:text-6xl xl:text-7xl text-black dark:text-white text-center lg:text-left">
-                  A webapps to find your favourite <span id="elementType"></span>
+                  YHAA NOPAL GAGAL RISTEK <span id="elementType"></span>
                 </h1>
               </motion.div>
               <motion.div
