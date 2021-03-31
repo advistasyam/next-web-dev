@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     new TypeIt("#elementType", {
-      speed: 200,
+      speed: 75,
       loop: true,
     })
       .type("WWKWKWKWK", { delay: 1000 })
