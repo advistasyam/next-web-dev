@@ -20,10 +20,10 @@ export default function Home() {
 
   useEffect(() => {
     new TypeIt("#elementType", {
-      speed: 150,
+      speed: 200,
       loop: true,
     })
-      .type("wWKWKWKWK", { delay: 1000 })
+      .type("WWKWKWKWK", { delay: 1000 })
       .delete()
       .type("AWKOAKWOAKWOAK", { delay: 1000 })
       .delete()
@@ -73,7 +73,7 @@ export default function Home() {
                 transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
               >
                 <h1 className="font-base text-4xl lg:text-6xl xl:text-7xl text-black dark:text-white text-center lg:text-left">
-                  YHAA NOPAL GAGAL RISTEK <span id="elementType"></span>
+                  YHAA NOPAL ADRIAN GAGAL RISTEK <span id="elementType"></span>
                 </h1>
               </motion.div>
               <motion.div
