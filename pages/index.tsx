@@ -73,7 +73,7 @@ export default function Home() {
                 transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
               >
                 <h1 className="font-base text-4xl lg:text-6xl xl:text-7xl text-black dark:text-white text-center lg:text-left">
-                  YHAA NOPAL ADRIAN GAGAL RISTEK <span id="elementType"></span>
+                  YHAA RASYID MARSHA GAGAL RISTEK <span id="elementType"></span>
                 </h1>
               </motion.div>
               <motion.div
