@@ -223,7 +223,7 @@ const film: React.FC<filmProps> = () => {
         <form className="min-h-85" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-center mt-12">
             <h1 className="text-black text-3xl sm:text-5xl">
-              Karena Temen temen gw gagal, sok cari film biar ga <span className="text-hijau">kecewa</span> lagi
+              Find Your <span className="text-hijau">Items!</span>
             </h1>
           </div>
           <div className="container mx-auto flex items-center justify-center px-6 sm:px-0">

@@ -23,11 +23,11 @@ export default function Home() {
       speed: 75,
       loop: true,
     })
-      .type("WWKWKWKWK", { delay: 1000 })
+      .type("Movies", { delay: 1000 })
       .delete()
-      .type("AWKOAKWOAKWOAK", { delay: 1000 })
+      .type("Series", { delay: 1000 })
       .delete()
-      .type("JAJAJJAJAJA", { delay: 1000 })
+      .type("Games", { delay: 1000 })
       .go()
   }, [])
 
@@ -50,7 +50,7 @@ export default function Home() {
             style={{ height: "85vh" }}
           >
             <ImageDiv className="w-full lg:w-1/2 flex items-center justify-center">
-              <img src="/fullwhite.svg" id="img" />
+              <img src="/fullwhite.svg" id="img" alt="hero" />
             </ImageDiv>
             <div className="w-full lg:w-1/2 items-center justify-center px-6">
               <div className="mb-6">
@@ -60,7 +60,7 @@ export default function Home() {
                   transition={{ ease: "easeInOut", duration: 0.5, delay: 0.5 }}
                 >
                   <div className="flex flex-row items-center justify-center lg:justify-start space-x-2">
-                    <img src="/tailwind.svg" style={{ width: "60px" }} />
+                    <img src="/tailwind.svg" style={{ width: "60px" }} alt="logo" />
                     <h1 className="text-xl text-black dark:text-white">
                       Acil Pages
                     </h1>
@@ -73,7 +73,7 @@ export default function Home() {
                 transition={{ ease: "easeInOut", duration: 0.5, delay: 1 }}
               >
                 <h1 className="font-base text-4xl lg:text-6xl xl:text-7xl text-black dark:text-white text-center lg:text-left">
-                  YHAA RASYID MARSHA GAGAL RISTEK <span id="elementType"></span>
+                  A webapps to find your favourite <span id="elementType"></span>
                 </h1>
               </motion.div>
               <motion.div

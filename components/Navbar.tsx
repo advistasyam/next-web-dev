@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             <div className="mb-0">
               <Link href="/">
                 <a className="flex flex-row items-center space-x-2">
-                  <img src="/tailwind.svg" style={{ width: "40px" }} />
+                  <img src="/tailwind.svg" style={{ width: "40px" }} alt="logo" />
                   <h1 className="text-xl text-black dark:text-white">
                     Acil Pages
                   </h1>
